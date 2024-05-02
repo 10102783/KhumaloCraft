@@ -1,0 +1,90 @@
+﻿@model List<KhumaloCraft.Models.Order>
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5dc; /* Beige */
+        color: #4d3319; /* Dark Brown */
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff; /* White */
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #4CAF50; /* Dark Green */
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #ddd;
+        }
+
+    .no-orders {
+        margin-top: 20px;
+        font-style: italic;
+        text-align: center;
+    }
+</style>
+
+<div class="container">
+    <h1>View Orders</h1>
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order Date</th>
+                    <th>Total Amount</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderDate</td>
+                        <td>@order.TotalAmount</td> <!-- Corrected syntax -->
+                        <td><a asp-action="OrderDetails" asp-route-id="@order.OrderId">Details</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="no-orders">No orders found.</p>
+    }
+</div>

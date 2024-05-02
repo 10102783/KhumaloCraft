@@ -1,0 +1,54 @@
+﻿@model AdminPageModel
+
+@{
+    ViewData["Title"] = "Admin Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5dc; /* Beige */
+        color: #4d3319; /* Dark Brown */
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff; /* White */
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    h1 {
+        color: #4CAF50; /* Dark Green */
+    }
+
+    .btn {
+        margin-top: 20px;
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50; /* Dark Green */
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+</style>
+
+<div class="container">
+    <h1>Welcome to the Admin Page</h1>
+
+    <div>
+        <a asp-controller="Admin" asp-action="AddProduct" class="btn">Add New Product</a>
+    </div>
+</div>

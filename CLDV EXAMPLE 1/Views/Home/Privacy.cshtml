@@ -1,22 +1,125 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
-}
+﻿f<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    
+        <style>
+            /* Add your CSS styles here */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5dc; /* Beige */
+                color: #4d3319; /* Dark Brown */
+                font-family: Arial, sans-serif;
+            }
 
-<style>
-    body {
-        background-image: url('/IMG/back.png');
-        /* Adjust background properties as needed */
-        background-size: cover;
-        background-repeat: no-repeat;
-        /* Optionally, you can set other styles for your content */
-        color: #333;
-        font-family: Arial, sans-serif;
-    }
-</style>
+            header h1 {
+                color: #8b4513; /* Saddle Brown */
+            }
 
-<h1>@ViewData["Title"]</h1>
+            section {
+                padding: 20px;
+            }
 
-<p>Use this page to detail your site's privacy policy.</p>
+            h2 {
+                color: #8b4513; /* Saddle Brown */
+            }
 
+            p {
+                color: #666;
+            }
+        </style>
+    
+</head>
+<body>
+    <h1>Checkout</h1>
+    <div id="cart-items"></div>
+    <p>Total Price: <span id="total-price">0</span></p>
 
+    <script>
+        // Retrieve cart items from localStorage
+        let cartItems = JSON.parse(localStorage.getItem('checkoutCart')) || [];
+        let totalPrice = 0;
 
+        // Get the div where we'll display cart items
+        let cartContainer = document.getElementById('cart-items');
+        let totalPriceElement = document.getElementById('total-price');
+
+        // If cart is empty, display a message
+        if (cartItems.length === 0) {
+            cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+        } else {
+            // Render cart items and calculate total price
+            cartItems.forEach(item => {
+                let itemElement = createCartItemElement(item);
+                cartContainer.appendChild(itemElement);
+                totalPrice += item.price * item.quantity;
+            });
+            totalPriceElement.textContent = totalPrice;
+        }
+
+        // Function to create cart item element
+        function createCartItemElement(item) {
+            let itemElement = document.createElement('div');
+            itemElement.innerHTML = `
+                                <p>${item.name} - $${item.price * item.quantity}</p>
+                                <button onclick="decreaseQuantity(${item.id})">-</button>
+                                <span id="quantity-${item.id}">${item.quantity}</span>
+                                <button onclick="increaseQuantity(${item.id})">+</button>
+                            `;
+            return itemElement;
+        }
+
+        // Function to calculate total price
+        function calculateTotalPrice() {
+            let total = 0;
+            cartItems.forEach(item => {
+                total += item.price * item.quantity;
+            });
+            return total;
+        }
+
+        // Update total price when items are added or removed
+        function updateTotalPrice() {
+            totalPriceElement.textContent = calculateTotalPrice();
+        }
+
+        // Function to add item to cart
+        function addToCart(name, price) {
+            let existingItem = cartItems.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                let id = cartItems.length > 0 ? Math.max(...cartItems.map(item => item.id)) + 1 : 1;
+                let newItem = { id: id, name: name, price: price, quantity: 1 };
+                cartItems.push(newItem);
+                let newItemElement = createCartItemElement(newItem);
+                cartContainer.appendChild(newItemElement);
+            }
+            localStorage.setItem('checkoutCart', JSON.stringify(cartItems));
+            updateTotalPrice();
+        }
+
+        // Function to increase quantity of item
+        function increaseQuantity(id) {
+            let item = cartItems.find(item => item.id === id);
+            item.quantity++;
+            localStorage.setItem('checkoutCart', JSON.stringify(cartItems));
+            updateTotalPrice();
+        }
+
+        // Function to decrease quantity of item
+        function decreaseQuantity(id) {
+            let item = cartItems.find(item => item.id === id);
+            if (item.quantity > 1) {
+                item.quantity--;
+                localStorage.setItem('checkoutCart', JSON.stringify(cartItems));
+                updateTotalPrice();
+            }
+        }
+    </script>
+</body>
+</html>

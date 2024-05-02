@@ -1,0 +1,96 @@
+﻿@model KhumaloCraft.Models.ShoppingCart
+@{
+    ViewData["Title"] = "Place Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-image: url('background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: #f5f5dc; /* Beige */
+        color: #4d3319; /* Dark Brown */
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+    .total-price {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .action-buttons {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container">
+    <h1>Place Order</h1>
+
+    @if (Model.ShoppingCartItems.Any())
+    {
+        <form asp-controller="Order" asp-action="PlaceOrder" method="post">
+            <input type="hidden" name="shoppingCartId" value="@Model.ShoppingCartId" />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShoppingCartItems)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Quantity</td>
+                            <td>$@item.Product.Price</td>
+                            <td>$@(item.Quantity * item.Product.Price)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+                <h4>Total Price: $@Model.TotalPrice</h4>
+                <button type="submit" class="btn btn-primary">Confirm Order</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p>No items in the shopping cart.</p>
+    }
+</div>

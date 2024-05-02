@@ -1,0 +1,89 @@
+﻿@model KhumaloCraft.Models.Product
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5dc; /* Beige */
+        color: #4d3319; /* Dark Brown */
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff; /* White */
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #4CAF50; /* Dark Green */
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 10px 20px;
+        background-color: #4CAF50; /* Dark Green */
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d; /* Dark Gray */
+    }
+
+    .btn:hover {
+        background-color: #45a049; /* Darker Green */
+    }
+</style>
+
+<div class="container">
+    <h1>Add New Product</h1>
+
+    <form asp-action="AddProduct" method="post">
+        <div class="form-group">
+            <label for="Name">Name:</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required>
+        </div>
+        <div class="form-group">
+            <label for="Price">Price:</label>
+            <input type="number" class="form-control" id="Price" name="Price" value="@Model.Price" required>
+        </div>
+        <div class="form-group">
+            <label for="Category">Category:</label>
+            <input type="text" class="form-control" id="Category" name="Category" value="@Model.Category" required>
+        </div>
+        <div class="form-group">
+            <label for="PicUrl">Picture Url:</label>
+            <input type="text" class="form-control" id="PicUrl" name="PicUrl" value="@Model.PicUrl" required>
+        </div>
+        <div class="form-group">
+            <label for="Availability">Availability:</label>
+            <select class="form-control" id="Availability" name="Availability" required>
+                <option value="true">Available</option>
+                <option value="false">Not Available</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <a href="@Url.Action("AdminPage", "Admin")" class="btn btn-secondary mt-3">Back to Admin Page</a>
+
+</div>

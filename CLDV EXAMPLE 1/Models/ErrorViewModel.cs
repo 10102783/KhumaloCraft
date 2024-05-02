@@ -1,4 +1,4 @@
-namespace CLDV_EXAMPLE_1.Models
+namespace KhumaloCraft.Models
 {
     public class ErrorViewModel
     {
