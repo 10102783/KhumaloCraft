@@ -1,3 +1,10 @@
+
+
+.bg-custom {
+    background-color: #3366cc; /* Custom color for the navbar */
+}
+
+
 html {
   font-size: 14px;
 }

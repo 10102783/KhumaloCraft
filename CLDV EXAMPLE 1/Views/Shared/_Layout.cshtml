@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/KhumaloCraft.styles.css" asp-append-version="true" />
+
+     <style>
+        /* Custom style for the search bar link */
+        .navbar-nav .nav-link.search-bar-link {
+            color: #007bff !important; /* Blue text color */
+        }
+
+        .navbar-nav .nav-link.search-bar-link:hover {
+                color: #fff !important; /* white text color on hover */
+        }
+    </style>
+    
 </head>
 <body>
     <header>
@@ -23,11 +35,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        
+
                         @if(User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="AdminPage">Admin</a>
                                 </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ViewOrders">View Orders admin</a>
+                            </li>
                           
                         }
 
@@ -41,6 +59,8 @@
                             <li class="nav-item">
                                 <span class="nav-link">Welcome, @User.Identity.Name!</span>
                             </li>
+
+                            
 
                         }
                         else
@@ -72,6 +92,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="ViewOrders">View Orders</a>
                             </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Utilities" asp-action="Index">To-Do List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link search-bar-link" asp-area="" asp-controller="Products" asp-action="Search">Search</a>
+                        </li>
+                       
+                       
                       
 
 

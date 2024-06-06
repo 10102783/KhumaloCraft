@@ -1,0 +1,128 @@
+﻿@model List<ClassLibrary1.TodoTask>
+
+@{
+    ViewData["Title"] = "To-Do List";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5dc; /* Beige */
+            color: #4d3319; /* Dark Brown */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff; /* White */
+            border-radius: 20px; /* Increased border-radius for a more rounded appearance */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #4CAF50; /* Dark Green */
+        }
+
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4CAF50; /* Dark Green */
+        }
+
+        dl.row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        dt.col-sm-3 {
+            flex: 0 0 30%;
+            max-width: 30%;
+            font-weight: bold;
+        }
+
+        dd.col-sm-9 {
+            flex: 0 0 70%;
+            max-width: 70%;
+            margin-left: 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .table th, .table td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+
+            .table th {
+                background-color: #f2f2f2;
+            }
+
+            .table tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .table tr:hover {
+                background-color: #ddd;
+            }
+
+        .btn {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Dark Green */
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn:hover {
+                background-color: #45a049; /* Darker Green */
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <form method="post" action="/Utilities/AddTask">
+            <input type="text" name="title" placeholder="Enter task title" required>
+            <button type="submit">Add Task</button>
+        </form>
+
+        @if (Model.Count > 0)
+        {
+            <ul>
+                @foreach (var task in Model)
+                {
+                    <li>
+                        <input type="checkbox" id="task_@task.Id" @(task.IsCompleted ? "checked" : "") onchange="this.form.submit()">
+                        <label class="@((task.IsCompleted ? "completed" : ""))" for="task_@task.Id">@task.Title</label>
+                        <form method="post" action="/Utilities/DeleteTask">
+                            <input type="hidden" name="id" value="@task.Id">
+                            <button class="delete-btn" type="submit">Delete</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="no-tasks-msg">No tasks found.</p>
+        }
+    </div>
+
+</body>
+</html>

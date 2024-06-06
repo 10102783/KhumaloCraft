@@ -1,0 +1,43 @@
+﻿@model List<KhumaloCraft.Models.Product>
+
+<a asp-controller="Admin" asp-action="AdminPage" class="btn-primary">Back</a>
+
+
+<h1>View Product</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>Name</th>
+            <th>PicUrl</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+
+        </tr>
+      
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.PicUrl</td>
+                <td>@product.Price</td>
+                <td>@product.Category</td>
+                <td>
+                    <form asp-controller="Admin" asp-action="DeleteProduct" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                        <input type="hidden" name="id" value="@product.ProductID"/>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Admin" asp-action="AddProduct" class="btn btn-success">Add new Product</a>
+
+

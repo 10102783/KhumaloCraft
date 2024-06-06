@@ -77,14 +77,14 @@
                         <tr>
                             <td>@item.Product.Name</td>
                             <td>@item.Quantity</td>
-                            <td>$@item.Product.Price</td>
-                            <td>$@(item.Quantity * item.Product.Price)</td>
+                            <td>R@(item.Product.Price)</td>
+                            <td>R@(item.Quantity * item.Product.Price)</td>
                         </tr>
                     }
                 </tbody>
             </table>
             <div>
-                <h4>Total Price: $@Model.TotalPrice</h4>
+                <h4>Total Price: R@(Model.TotalPrice)</h4>
                 <button type="submit" class="btn btn-primary">Confirm Order</button>
             </div>
         </form>

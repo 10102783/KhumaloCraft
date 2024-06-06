@@ -53,7 +53,6 @@
 </style>
 
 <section id="products">
-   
 </section>
 
 <div class="container">
@@ -69,9 +68,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-text">@product.Price</p>
-                            @if (
-
-                           product.Availability)
+                            @if (product.Availability)
                             {
                                 <p class="card-text text-success">Available</p>
                             }
@@ -110,18 +107,13 @@
                 </div>
             </div>
 
-            </div>
         </div>
     </div>
 </div>
-
 </div>
 
-
-
+</div>
 <!-- Add jQuery for filtering products by category -->
-
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
@@ -132,12 +124,13 @@
 
             // Send AJAX request to add product to cart
             $.ajax({
-                url: '@Url.Action("AddToCart", "ShoppingCart")',
+                url: '/ShoppingCart/AddToCart', // Updated URL
                 type: 'POST',
-                data: { productId: productId, quantity: 1 },
+                contentType: 'application/json', // Added content type
+                data: JSON.stringify({ productId: productId, quantity: 1 }),
                 success: function (response) {
                     // Redirect to shopping cart page
-                    window.location.href = '@Url.Action("Index", "ShoppingCart")';
+                    window.location.href = '/ShoppingCart/Index';
                 },
                 error: function (xhr, status, error) {
                     // Display error message if request fails
@@ -147,6 +140,7 @@
         });
     });
 </script>
+
 
 
  

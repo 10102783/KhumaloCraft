@@ -1,0 +1,123 @@
+﻿@model IEnumerable<KhumaloCraft.Models.Product>
+
+@{
+    ViewData["Title"] = "Search Products";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5dc; /* Beige */
+        color: #4d3319; /* Dark Brown */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Style for the search bar */
+    .search-bar {
+        background-color: #4d3319; /* Dark Brown */
+        color: #fff; /* Text color */
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    /* Button style */
+    .btn-custom {
+        background-color: #4d3319; /* Dark Brown */
+        color: #fff;
+        border: none;
+    }
+
+        .btn-custom:hover {
+            background-color: #3e2916; /* Darker Brown */
+        }
+
+    /* Style for the product cards */
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .card-img-top {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+</style>
+
+<h2>Search Products</h2>
+
+<form asp-action="Search" method="get">
+    <div class="form-group search-bar">
+        <input type="text" name="query" class="form-control" placeholder="Enter product name or category" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@Url.Content(product.PicUrl)" class="card-img-top" alt="@product.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">Price: @product.Price.ToString("C")</p>
+                        <p class="card-text">Category: @product.Category</p>
+                        <p class="card-text">@{
+                                string availability = product.Availability ? "Available" : "Not Available";
+                            }Availability: @availability</p>
+                        <button class="btn btn-custom add-to-cart-btn" data-product-id="@product.ProductID">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else if (Model != null && !Model.Any())
+{
+    <p>No products found matching your search criteria.</p>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+            cartButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const productId = this.getAttribute('data-product-id');
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                    fetch('/ShoppingCart/AddToCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token
+                        },
+                        body: JSON.stringify({ productId: productId, quantity: 1 }) // Assuming quantity is 1
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.href = '/ShoppingCart/Index'; // Redirect to shopping cart
+                            } else {
+                                alert('Failed to add product to cart');
+                            }
+                        });
+                });
+            });
+        });
+    </script>
+}
+

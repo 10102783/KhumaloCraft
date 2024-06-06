@@ -99,7 +99,7 @@
             <dd class="col-sm-9">@Model.OrderDate</dd>
 
             <dt class="col-sm-3">Total Amount:</dt>
-            <dd class="col-sm-9">$@Model.TotalAmount</dd>
+            <dd class="col-sm-9">R@(Model.TotalAmount)</dd>
         </dl>
     </div>
 
@@ -121,8 +121,8 @@
                     <tr>
                         <td>@item.Product.Name</td>
                         <td>@item.Quantity</td>
-                        <td>$@item.UnitPrice</td>
-                        <td>$@(item.Quantity * item.UnitPrice)</td>
+                        <td>R@(item.UnitPrice)</td>
+                        <td>R@(item.Quantity * item.UnitPrice)</td>
                     </tr>
                 }
             </tbody>
@@ -133,5 +133,5 @@
         <p>No order items found.</p>
     }
 
-    <a asp-controller="Order" asp-action="ViewOrders" class="btn">Back to Orders</a>
+    <a asp-controller="Order" asp-action="ViewOrders" class="btn btn-primary">Back to Orders</a>
 </div>

@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KhumaloCraft.Controllers
 {
@@ -41,7 +44,6 @@ namespace KhumaloCraft.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // Calculate total price
             decimal totalPrice = shoppingCart.ShoppingCartItems.Sum(item => item.Quantity * item.Product.Price);
             shoppingCart.TotalPrice = totalPrice;
 
@@ -50,62 +52,51 @@ namespace KhumaloCraft.Controllers
             return View(shoppingCart);
         }
 
-
-
         // Action to add a product to the shopping cart
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddToCart(int productId, int quantity)
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
         {
-            // Retrieve the current user
             var user = await _userManager.GetUserAsync(User);
-
-            // Retrieve the product
-            var product = await _context.Product.FindAsync(productId);
+            var product = await _context.Product.FindAsync(request.ProductId);
 
             if (product == null)
             {
-                return NotFound(); // Return 404 Not Found if product is not found
+                return NotFound();
             }
 
-            // Retrieve the user's shopping cart
             var shoppingCart = await _context.ShoppingCart
                 .Include(sc => sc.ShoppingCartItems)
                 .FirstOrDefaultAsync(sc => sc.UserId == user.Id);
 
-            // Add the product to the shopping cart or update the quantity if already exists
             if (shoppingCart == null)
             {
-                // Create a new shopping cart if it doesn't exist
                 shoppingCart = new ShoppingCart
                 {
                     UserId = user.Id,
-                    ShoppingCartItems = new System.Collections.Generic.List<ShoppingCartItem>()
+                    ShoppingCartItems = new List<ShoppingCartItem>()
                 };
                 _context.ShoppingCart.Add(shoppingCart);
             }
 
-            var cartItem = shoppingCart.ShoppingCartItems.FirstOrDefault(item => item.ProductId == productId);
+            var cartItem = shoppingCart.ShoppingCartItems.FirstOrDefault(item => item.ProductId == request.ProductId);
             if (cartItem != null)
             {
-                // Update quantity if the product already exists in the cart
-                cartItem.Quantity += quantity;
+                cartItem.Quantity += request.Quantity;
             }
             else
             {
-                // Add the product to the cart with the specified quantity
                 cartItem = new ShoppingCartItem
                 {
-                    ProductId = productId,
-                    Quantity = quantity
+                    ProductId = request.ProductId,
+                    Quantity = request.Quantity
                 };
                 shoppingCart.ShoppingCartItems.Add(cartItem);
             }
 
-            // Save changes to the database
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
 
         // Action to remove a product from the shopping cart
@@ -113,19 +104,21 @@ namespace KhumaloCraft.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveFromCart(int shoppingCartItemId)
         {
-            // Retrieve the shopping cart item
             var shoppingCartItem = await _context.ShoppingCartItem.FindAsync(shoppingCartItemId);
 
             if (shoppingCartItem != null)
             {
-                // Remove the shopping cart item
                 _context.ShoppingCartItem.Remove(shoppingCartItem);
-
-                // Save changes to the database
                 await _context.SaveChangesAsync();
             }
 
             return RedirectToAction(nameof(Index));
         }
+    }
+
+    public class AddToCartRequest
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
     }
 }
