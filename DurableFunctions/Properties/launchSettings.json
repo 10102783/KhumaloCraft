@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "DurableFunctions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7113"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 30191,
+      "useSSL": false
+    }
+  }
+}
