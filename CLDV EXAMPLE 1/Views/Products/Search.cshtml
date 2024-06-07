@@ -69,16 +69,18 @@
         @foreach (var product in Model)
         {
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card" data-product-id="@product.ProductID" data-availability="@product.Availability">
                     <img src="@Url.Content(product.PicUrl)" class="card-img-top" alt="@product.Name">
                     <div class="card-body">
                         <h5 class="card-title">@product.Name</h5>
                         <p class="card-text">Price: @product.Price.ToString("C")</p>
                         <p class="card-text">Category: @product.Category</p>
-                        <p class="card-text">@{
+                        <p class="card-text">
+                            @{
                                 string availability = product.Availability ? "Available" : "Not Available";
-                            }Availability: @availability</p>
-                        <button class="btn btn-custom add-to-cart-btn" data-product-id="@product.ProductID">Add to Cart</button>
+                            }Availability: @availability
+                        </p>
+                        <button class="btn btn-custom add-to-cart-btn" @(product.Availability ? "" : "disabled")>Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -97,8 +99,16 @@ else if (Model != null && !Model.Any())
 
             cartButtons.forEach(button => {
                 button.addEventListener('click', function () {
-                    const productId = this.getAttribute('data-product-id');
+                    const productId = this.closest('.card').getAttribute('data-product-id');
+                    const isAvailable = this.closest('.card').getAttribute('data-availability') === 'True';
                     const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                    if (!isAvailable) {
+                        // Remove the product card if it is not available
+                        this.closest('.col-md-4').remove();
+                        alert('This product is not available and has been removed from the list.');
+                        return;
+                    }
 
                     fetch('/ShoppingCart/AddToCart', {
                         method: 'POST',
