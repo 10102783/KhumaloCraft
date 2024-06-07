@@ -58,11 +58,11 @@
 <div class="container">
     <div class="row">
         <!-- Database Products -->
-        <h2 class="text-center mb-4"> Database Products</h2>
+        <h2 class="text-center mb-4">Database Products</h2>
         <div class="row">
             @foreach (var product in Model)
             {
-                <div class="col-md-4 mb-4 product-item" data-category="@product.Category">
+                <div class="col-md-4 mb-4 product-item @(!product.Availability ? "unavailable-product" : "")" data-category="@product.Category">
                     <div class="card h-100 product-card">
                         <img src="@Url.Content(product.PicUrl)" alt="@product.Name" />
                         <div class="card-body">
@@ -82,37 +82,10 @@
                 </div>
             }
 
-            <h2>Featured Products</h2>
-            <!-- Product 1 -->
-            <div class="col-md-4 mb-4 product-item" data-category="Bag">
-                <div class="card h-100 product-card">
-                    <img src="~/IMG/PRODUCT1.PNG" class="card-img-top" alt="Product 1" onclick="addToCart('Bali rattan bag', 100.00)">
-                    <div class="card-body">
-                        <h5 class="card-title">Bali rattan bag</h5>
-                        <p class="card-text">The Bali rattan bag is one item in particular that has reached global success.</p>
-                        <p class="card-text">R100.00</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product 2 -->
-            <div class="col-md-4 mb-4 product-item" data-category="Pot">
-                <div class="card h-100 product-card">
-                    <img src="~/IMG/PRODUCT2.PNG" class="card-img-top" alt="Product 2">
-                    <div class="card-body">
-                        <h5 class="card-title">ClayPot</h5>
-                        <p class="card-text">A traditional vessel made from clay typically used for cooking, storing food, or displaying plants.</p>
-                        <p class="card-text">R150.00</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>
-</div>
 
-</div>
 <!-- Add jQuery for filtering products by category -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -121,29 +94,33 @@
         // Add to Cart button click event
         $('.add-to-cart-btn').click(function () {
             var productId = $(this).data('product-id');
+            var $productItem = $(this).closest('.product-item');
 
-            // Send AJAX request to add product to cart
-            $.ajax({
-                url: '/ShoppingCart/AddToCart', // Updated URL
-                type: 'POST',
-                contentType: 'application/json', // Added content type
-                data: JSON.stringify({ productId: productId, quantity: 1 }),
-                success: function (response) {
-                    // Redirect to shopping cart page
-                    window.location.href = '/ShoppingCart/Index';
-                },
-                error: function (xhr, status, error) {
-                    // Display error message if request fails
-                    console.error(xhr.responseText);
-                }
-            });
+            // Check if the product is available
+            if (!$productItem.hasClass('unavailable-product')) {
+                // Send AJAX request to add product to cart
+                $.ajax({
+                    url: '/ShoppingCart/AddToCart', // Updated URL
+                    type: 'POST',
+                    contentType: 'application/json', // Added content type
+                    data: JSON.stringify({ productId: productId, quantity: 1 }),
+                    success: function (response) {
+                        // Redirect to shopping cart page
+                        window.location.href = '/ShoppingCart/Index';
+                    },
+                    error: function (xhr, status, error) {
+                        // Display error message if request fails
+                        console.error(xhr.responseText);
+                    }
+                });
+            } else {
+                // Remove the parent container of the clicked button (product item)
+                $productItem.remove();
+            }
         });
     });
 </script>
 
-
-
- 
 
 
 

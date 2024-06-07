@@ -19,7 +19,7 @@ namespace DurableFunctions
             // Call activity functions for KhumaloCraft
             outputs.Add(await context.CallActivityAsync<string>(nameof(AddProduct), new Product { Name = "Sample Product", Price = 29.99M, Category = "Crafts", Availability = true }));
             outputs.Add(await context.CallActivityAsync<string>(nameof(OrderProduct), new Order { ProductName = "Sample Product", Quantity = 2 }));
-            outputs.Add(await context.CallActivityAsync<string>(nameof(ContactUs), new Inquiry { CustomerName = "John Doe", Message = "I have a question about your products." }));
+            outputs.Add(await context.CallActivityAsync<string>(nameof(ContactUs), new Inquiry { CustomerName = "Maphiri Vhulondo", Message = "I have a question about your products." }));
 
             // returns responses from activities
             return outputs;
