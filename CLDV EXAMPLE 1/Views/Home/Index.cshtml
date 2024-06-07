@@ -2,49 +2,102 @@
     ViewData["Title"] = "Home Page";
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Khumalos Craft</title>
+    <style>
+        /* CSS styles with shades of brown */
+        body {
+            background-color: #f5f5dc; /* Beige */
+            color: #f2e5bd; /* Dark Brown */
+            font-family: Arial, sans-serif;
+            background-image: url('/IMG/R.png');
+        }
 
-<div class="text-center">
-    <h1 class="display-4"></h1>
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Welcome to Khumalos Craft</title>
-        <style>
-            /* CSS styles with shades of brown */
-            body {
-                background-color: #f5f5dc; /* Beige */
-                color: #f2e5bd; /* Dark Brown */
-                font-family: Arial, sans-serif;
-                background-image: url('/IMG/R.png');
+        h1 {
+            color: #8b4513; /* Saddle Brown */
+        }
 
-            }
+        /* Section for mission, vision, and goals */
+        .mission-vision-goals {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f2e5bd; /* Tan */
+            border-radius: 10px;
+        }
 
-            h1 {
+            .mission-vision-goals h2 {
                 color: #8b4513; /* Saddle Brown */
             }
 
-            /* Section for mission, vision, and goals */
-            .mission-vision-goals {
-                margin-top: 20px;
-                padding: 20px;
-                background-color: #f2e5bd; /* Tan */
-                border-radius: 10px;
+            .mission-vision-goals p {
+                color: #8b4513; /* Dark Brown */
             }
 
-                .mission-vision-goals h2 {
-                    color: #8b4513; /* Saddle Brown */
+            .mission-vision-goals ul {
+                color: #8b4513; /* Dark Brown */
+            }
+
+        /* Popup message style */
+        #popup-message {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        /* Star rating styles */
+        .rating {
+            display: inline-block;
+            unicode-bidi: bidi-override;
+            direction: rtl;
+        }
+
+            .rating input {
+                display: none;
+            }
+
+            .rating label {
+                float: right;
+                cursor: pointer;
+                color: #aaa;
+            }
+
+                .rating label:before {
+                    content: '★';
+                    margin-right: 5px;
+                    font-size: 30px;
                 }
 
-                .mission-vision-goals p {
-                    color: #8b4513; /* Dark Brown */
-                }
+            .rating input:checked ~ label,
+            .rating input:checked ~ label ~ label {
+                color: #ffca08; /* Yellow */
+            }
 
-                .mission-vision-goals ul {
-                    color: #8b4513; /* Dark Brown */
-                }
-        </style>
-    </head>
-    <body>
+        /* Submit button style */
+        #submit-rating-btn {
+            background-color: #8b4513; /* Saddle Brown */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+            #submit-rating-btn:hover {
+                background-color: #a0522d; /* Sienna */
+            }
+    </style>
+</head>
+<body>
+    <div class="text-center">
+        <h1 class="display-4"></h1>
         <h1>Welcome to Khumalos Craft</h1>
         <p>Discover unique handmade crafts from Khumalos Craft. Our collection features a variety of exquisite items crafted with care and attention to detail.</p>
 
@@ -65,10 +118,46 @@
             </ul>
         </div>
 
-        <!-- Footer -->
-        <footer>
-            <p>Contact us for custom orders or inquiries: info@khumaloscraft.com</p>
-        </footer>
-    </body>
-</html>
+        <!-- Star Rating Section -->
+        <div class="rating">
+            <input type="radio" id="star5" name="rating" value="5" />
+            <label for="star5">5</label>
+            <input type="radio" id="star4" name="rating" value="4" />
+            <label for="star4">4</label>
+            <input type="radio" id="star3" name="rating" value="3" />
+            <label for="star3">3</label>
+            <input type="radio" id="star2" name="rating" value="2" />
+            <label for="star2">2</label>
+            <input type="radio" id="star1" name="rating" value="1" />
+            <label for="star1">1</label>
+        </div>
 
+        <!-- Button to Submit Rating -->
+        <button id="submit-rating-btn">Submit Rating</button>
+
+        <!-- Popup message -->
+        <div id="popup-message"></div>
+
+        <!-- Include jQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <script>
+            function showPopupMessage(message) {
+                var popup = $("#popup-message");
+                popup.text(message);
+                popup.fadeIn().delay(3000).fadeOut();
+            }
+
+            $(document).ready(function () {
+                $("#submit-rating-btn").click(function () {
+                    var rating = $("input[name='rating']:checked").val();
+
+                    // Perform AJAX submission or any other processing with the rating value
+                    // For demonstration purposes, we're just showing a popup message
+                    showPopupMessage("Thank you for rating!");
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
