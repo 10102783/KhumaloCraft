@@ -73,7 +73,7 @@
                     <img src="@Url.Content(product.PicUrl)" class="card-img-top" alt="@product.Name">
                     <div class="card-body">
                         <h5 class="card-title">@product.Name</h5>
-                        <p class="card-text">Price: @product.Price.ToString("C")</p>
+                        <p class="card-text">Price: @String.Format(new System.Globalization.CultureInfo("en-ZA"), "{0:C}", product.Price)</p>
                         <p class="card-text">Category: @product.Category</p>
                         <p class="card-text">
                             @{
@@ -130,4 +130,3 @@ else if (Model != null && !Model.Any())
         });
     </script>
 }
-
